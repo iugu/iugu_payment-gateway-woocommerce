@@ -1,0 +1,31 @@
+.iugu-pix-qrcode-div {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+
+.iugu-pix-qrcode img {
+    clear: both;
+    display: block;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.iugu-pix-text-button {
+    width: 15% !important;
+}
+
+.iugu-pix-text-input {
+    width: 80% !important;
+}
+
+@media screen and (max-width: 500px) {
+    .iugu-pix-text-input {
+        width: 100% !important;
+    }
+    .iugu-pix-text-button {
+        width: 100% !important;
+    }
+}
