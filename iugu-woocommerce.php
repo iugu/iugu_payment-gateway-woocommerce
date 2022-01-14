@@ -6,7 +6,7 @@
  * Description: iugu payment gateway for WooCommerce.
  * Author: iugu
  * Author URI: https://iugu.com/
- * Version: 3.0.0.0
+ * Version: 3.0.0.1
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * License: GPLv2 or later
@@ -31,7 +31,7 @@ if (!class_exists('WC_Iugu2')) {
 		 */
 		const CLIENT_NAME = 'plugin-iugu-woocommerce-payment-gateway';
 
-		const CLIENT_VERSION = '3.0.0.0';
+		const CLIENT_VERSION = '3.0.0.1';
 
 		/**
 		 * Instance of this class.

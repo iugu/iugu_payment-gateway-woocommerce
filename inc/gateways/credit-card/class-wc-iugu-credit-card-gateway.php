@@ -419,14 +419,19 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 		$template_params = array();
 		if (!is_add_payment_method_page()) {
 			$registration_required = false;
-			if (WC() && WC()->checkout()) {
-				$registration_required = WC()->checkout()->is_registration_required();
-			}
-			if (!$registration_required) {
-				if (function_exists('wcs_cart_contains_renewal')) {
-					$registration_required = wcs_cart_contains_renewal();
+			if ($this->existe_subscriptions) {
+				if (WC_Subscriptions_Cart::cart_contains_subscription()) {
+					if (WC() && WC()->checkout()) {
+						$registration_required = WC()->checkout()->is_registration_required();
+					}
+					if (!$registration_required) {
+						if (function_exists('wcs_cart_contains_renewal')) {
+							$registration_required = wcs_cart_contains_renewal();
+						}
+					}	
 				}
 			}
+			$registration_required = apply_filters('iugu-payment-gateway-registration_required', $registration_required);
 			wp_enqueue_script('wc-credit-card-form');
 			$iugu_card_installments = 0;
 			$order_id = absint(get_query_var('order-pay'));

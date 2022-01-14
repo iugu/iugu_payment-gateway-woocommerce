@@ -85,14 +85,14 @@ class WC_Iugu_API2 {
     $endpoint = 'accounts/' . $this->gateway->account_id  . '/';
     $response = $this->do_request($endpoint, 'GET');
     if (is_object($response) && is_wp_error($response)) {
-      if ($this->gateway->debug === 'yes') {
+      if ($this->gateway && $this->gateway->debug === 'yes') {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to get account configuration: ' . $response['errors']);
       } // end if;
       return array(
         'errors' => $response['errors']
       );
     } else {
-      if ($this->gateway->debug === 'yes') {
+      if ($this->gateway && $this->gateway->debug === 'yes') {
         $this->gateway->log->add($this->gateway->id, '');
       } // end if;
       $body = json_decode($response['body'], true);
@@ -112,14 +112,14 @@ class WC_Iugu_API2 {
     $endpoint = 'dunning_steps?api_token=' . $this->gateway->api_token;
     $response = $this->do_request($endpoint, 'GET');
     if (is_object($response) && is_wp_error($response)) {
-      if ($this->gateway->debug === 'yes') {
+      if ($this->gateway && $this->gateway->debug === 'yes') {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to get account configuration: ' . $response['errors']);
       } // end if;
       return array(
         'errors' => $response['errors']
       );
     } else {
-      if ($this->gateway->debug === 'yes') {
+      if ($this->gateway && $this->gateway->debug === 'yes') {
         $this->gateway->log->add($this->gateway->id, '');
       } // end if;
       $body = json_decode($response['body'], true);
@@ -278,7 +278,7 @@ class WC_Iugu_API2 {
    * @return array  Request response.
    */
   protected function do_request($endpoint, $method = 'POST', $data = array(), $headers = array(), $api_token = '') {
-    if (!$api_token) {
+    if (!$api_token && $this->gateway) {
       $api_token = $this->gateway->api_token;
     } // end if;
     $params = array(
@@ -415,7 +415,7 @@ class WC_Iugu_API2 {
    */
   protected function get_invoice_due_date() {
     $days = 1;
-    if ($this->method === 'bank_slip') {
+    if ($this->method === 'bank-slip') {
       $days = intval($this->gateway->deadline);
     } // end if;
     return date('Y-m-d', strtotime('+' . $days . ' day'));
@@ -579,7 +579,7 @@ class WC_Iugu_API2 {
     $endpoint = 'invoices/' . $invoice_id . '/';
     $response = $this->do_request($endpoint, 'GET');
     if (is_object($response) && is_wp_error($response)) {
-      if ($this->gateway->debug == 'yes') {
+      if ($this->gateway && $this->gateway->debug == 'yes') {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to get the subscription: ' . $response->get_error_message());
       } // end if
       return array(
@@ -587,7 +587,7 @@ class WC_Iugu_API2 {
       );
     } else if (200 == $response['response']['code'] && 'OK' == $response['response']['message']) {
       $body = json_decode($response['body'], true);
-      if ($this->gateway->debug === 'yes') {
+      if ($this->gateway && $this->gateway->debug === 'yes') {
         $this->gateway->log->add($this->gateway->id, $body);
       } // end if;
       if (isset($body['id'])) {
@@ -606,17 +606,17 @@ class WC_Iugu_API2 {
    */
   protected function create_invoice($order) {
     $invoice_data = $this->get_invoice_data($order);
-    if ('yes' == $this->gateway->debug) {
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'Creating an invoice on iugu for order ' . $order->get_order_number() . ' with the following data: ' . print_r($invoice_data, true));
     } // end if;
     $invoice_data = $this->build_api_params($invoice_data);
     $response = $this->do_request('invoices', 'POST', $invoice_data);
     if (is_object($response) && is_wp_error($response)) {
-      if ('yes' == $this->gateway->debug) {
+      if ($this->gateway && 'yes' == $this->gateway->debug) {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to generate an invoice: ' . $response->get_error_message());
       } // end if;
     } elseif (200 == $response['response']['code'] && 'OK' == $response['response']['message']) {
-      if ('yes' == $this->gateway->debug) {
+      if ($this->gateway && 'yes' == $this->gateway->debug) {
         $this->gateway->log->add($this->gateway->id, 'Invoice created successfully!');
       } // end if;
       $body = json_decode($response['body'], true);
@@ -624,7 +624,7 @@ class WC_Iugu_API2 {
         'id' => $body['id'],
       );
     } // end if;
-    if ('yes' == $this->gateway->debug) {
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'Error while generating the invoice for order ' . $order->get_order_number() . ': ' . print_r($response, true));
     } // end if ;
   } // end create_invoice;
@@ -656,7 +656,7 @@ class WC_Iugu_API2 {
   protected function get_charge_data($order, $posted = array()) {
     $invoice = $this->create_invoice($order);
     if (!isset($invoice['id'])) {
-      if ('yes' == $this->gateway->debug) {
+      if ($this->gateway && 'yes' == $this->gateway->debug) {
         $this->gateway->log->add($this->gateway->id, 'Error while getting the charge data for order ' . $order->get_order_number() . ': Missing the invoice ID.');
       } // end if;
       return array(
@@ -713,7 +713,7 @@ class WC_Iugu_API2 {
    * @return array
    */
   public function create_charge($order, $posted = array()) {
-    if ('yes' == $this->gateway->debug) {
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'Doing charge for order ' . $order->get_order_number() . '...');
     } // end if;
     if ($this->method === 'pix') {
@@ -729,7 +729,7 @@ class WC_Iugu_API2 {
     $charge_data = $this->build_api_params($charge_data);
     $response = $this->do_request($endpoint, 'POST', $charge_data);
     if (is_object($response) && is_wp_error($response)) {
-      if ('yes' == $this->gateway->debug) {
+      if ($this->gateway && 'yes' == $this->gateway->debug) {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to do a charge: ' . $response->get_error_message());
       } // end if;
     } elseif (isset($response['body']) && !empty($response['body'])) {
@@ -738,17 +738,17 @@ class WC_Iugu_API2 {
         $charge['invoice_id'] = $charge['id'];
       }
       if (isset($charge['errors']) && $charge['errors']) {
-        if ('yes' == $this->gateway->debug) {
+        if ($this->gateway && 'yes' == $this->gateway->debug) {
           $this->gateway->log->add($this->gateway->id, 'Errors: ' . print_r($charge['errors'], TRUE));
         } // end if;
         return $charge;
       } // end if;
-      if ('yes' == $this->gateway->debug && isset($charge['success'])) {
+      if ($this->gateway && 'yes' == $this->gateway->debug && isset($charge['success'])) {
         $this->gateway->log->add($this->gateway->id, 'Charge created successfully!');
       } // end if;
       return $charge;
     } // end if;
-    if ('yes' == $this->gateway->debug) {
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'Error while doing the charge for order ' . $order->get_order_number() . ': ' . print_r($response, true));
     } // end if;
     return array('errors' => array(__('An error has occurred while processing your payment. Please, try again or contact us for assistance.', 'iugu-woocommerce')));
@@ -762,7 +762,7 @@ class WC_Iugu_API2 {
    */
   protected function create_customer($user_id) {
     $customer = new WC_Customer($user_id);
-    if ('yes' == $this->gateway->debug) {
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'Creating customer... (' . $user_id . ')');
     } // end if;
     $data = array(
@@ -795,8 +795,8 @@ class WC_Iugu_API2 {
     if ($zip_code = $this->only_numbers($customer->get_billing_postcode())) {
       $data['zip_code'] = $zip_code;
     } // end if;
-    $data = apply_filters('iugu_woocommerce_customer_data', $data, $order);
-    if ('yes' == $this->gateway->debug) {
+    $data = apply_filters('iugu_woocommerce_customer_data', $data);
+    if ($this->gateway && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, '*************************************');
       $this->gateway->log->add($this->gateway->id, json_encode($data));
       $this->gateway->log->add($this->gateway->id, '*************************************');
@@ -1114,7 +1114,7 @@ class WC_Iugu_API2 {
     $invoice_status = strtolower($invoice_status);
     $order_status   = $order->get_status();
     $order_updated = true;
-    if (isset($this->gateway->debug) && 'yes' == $this->gateway->debug) {
+    if ($this->gateway && isset($this->gateway->debug) && 'yes' == $this->gateway->debug) {
       $this->gateway->log->add($this->gateway->id, 'iugu payment status for order ' . $order->get_order_number() . ' is now: ' . $invoice_status);
     } // end if;
     switch ($invoice_status) {
@@ -1240,12 +1240,12 @@ class WC_Iugu_API2 {
     $transaction_id = get_post_meta($order_id, '_transaction_id', true);
     $response = $this->do_request('invoices/' . $transaction_id . '/refund', 'POST', array());
     if (is_object($response) && is_wp_error($response)) {
-      if ('yes' == $this->gateway->debug) {
+      if ($this->gateway && 'yes' == $this->gateway->debug) {
         $this->gateway->log->add($this->gateway->id, 'WP_Error while trying to refund order' . $order_id . ': ' . $response->get_error_message());
       } // end if;
       return $response;
     } elseif (isset($response['body']) && !empty($response['body'])) {
-      if ('yes' == $this->gateway->debug && isset($response['body']['status']) && $response['body']['status'] == "refunded") {
+      if ($this->gateway && 'yes' == $this->gateway->debug && isset($response['body']['status']) && $response['body']['status'] == "refunded") {
         $this->gateway->log->add($this->gateway->id, 'Order refunded successfully!');
       } // end if;
       return true;
