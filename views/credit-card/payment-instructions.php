@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Credit Card - Payment instructions.
  *
@@ -8,12 +7,12 @@
  * @version 1.0.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 ?>
 
 <div class="woocommerce-message">
-	<span><?php echo sprintf(__('Payment successfully made using credit card in %s.', 'iugu-woocommerce'), '<strong>' . $installments . 'x</strong>'); ?></span>
+	<span><?php echo sprintf( __( 'Payment successfully made using credit card in %s.', 'iugu-woocommerce' ), '<strong>' . $installments . 'x</strong>' ); ?></span>
 </div>
