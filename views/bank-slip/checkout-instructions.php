@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Bank Slip - Payment instructions.
  *
@@ -7,11 +8,10 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 ?>
-
 <div id="iugu-bank-slip-instructions">
-	<p><?php _e( 'After clicking on "Place order", you will have access to the bank slip, which you can print and pay on your internet banking or in a lottery retailer.', 'iugu-woocommerce' ); ?><br /><?php _e( 'Note: The order will be confirmed only after the payment approval.', 'iugu-woocommerce' ); ?></p>
+	<p><?php _e('After clicking on "Place order", you will have access to the bank slip, which you can print and pay on your internet banking or in a lottery retailer.', IUGU); ?><br /><?php _e('Note: The order will be confirmed only after the payment approval.', IUGU); ?></p>
 </div>

@@ -88,6 +88,48 @@ Para produtos digitais, por padrão, o WooCommerce só permite o acesso do compr
 
 == Changelog ==
 
+= 3.0.0.11 = 
+* Correção: Quando a transação do cartão for negada, alterar o status para malsucedido direto.
+
+= 3.0.0.10 = 
+* Correção: Envio de Bairro na criação do Customer
+
+= 3.0.0.9 = 
+* Melhoria: Adicionado parâmetro para configurar a partir de qual data deve ser verificado se os Customers IDs são validos. Usado quando o "ID da conta na IUGU" precisa ser alterado.
+
+= 3.0.0.8 = 
+* Melhoria: Alterado para quando tem apenas uma parcela no cartão não demostrar o combo com a seleção de parcela
+
+= 3.0.0.7 = 
+* Melhoria: Incluído a possibilidade de na assinatura alterar a forma de pagamento para a proxima recorrencia
+
+= 3.0.0.6 = 
+* Melhoria: Unificado as configurações comuns da API, na aba IUGU das configurações
+* Melhoria: Ao salvar a aba IUGU nas configurações, agora é verificado se é preciso recriar o webhook
+* Melhoria: Incluído configuração para qual status deve ser modificado o pedido para pagamento é pendente
+* Melhoria: Incluído configuração para qual status deve ser modificado o pedido para processamento
+* Melhoria: Incluído para utlizar o celular no cadastro do cliente caso o telefone não esteja informado
+
+= 3.0.0.5 = 
+* Melhoria: Alterado para permitir postegar o ciclo de assinatura no woocommerce subscriptions
+* Melhoria: Alterado para enviar s/n caso o número do endereço no cadastro do cliente não esteja preenchido
+
+= 3.0.0.4 = 
+* Melhoria: Adicionado compatibilidade com o plugin "HandMade WooCommerce Order Status Control"
+
+= 3.0.0.3 = 
+* Melhoria: Adicionado mensagem ao clicar no botão de cópia do PIX
+
+= 3.0.0.2 = 
+* Melhoria: Criação de configuração para envio de split na fatura
+
+= 3.0.0.1 = 
+* Correção: Não obrigar salvar o cartão se não tiver assinatura no carrinho
+* Correção: Correção para gerar o boleto com vencimento futuro
+
+= 3.0.0.0 = 
+* Correção: Correções de bugs
+
 = 2.2.1 = 
 * Correção: Correção na demostração de formas de pagamento do Pluggin da IUGU, para produtos já cadastrados no Woocommerce antes da ativação do Plugin da IUGU
 
