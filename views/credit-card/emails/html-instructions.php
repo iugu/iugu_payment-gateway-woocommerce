@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Credit Card - HTML email instructions.
  *
@@ -7,11 +8,11 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 ?>
 
-<h2><?php _e( 'Payment', 'iugu-woocommerce' ); ?></h2>
+<h2><?php _e('Payment', IUGU); ?></h2>
 
-<p class="order_details"><?php echo sprintf( __( 'Payment successfully made using credit card in %s.', 'iugu-woocommerce' ), '<strong>' . $installments . 'x</strong>' ); ?></p>
+<p class="order_details"><?php echo sprintf(__('Payment successfully made using credit card in %s.', IUGU), '<strong>' . $installments . 'x</strong>'); ?></p>
