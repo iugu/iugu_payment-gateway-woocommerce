@@ -84,7 +84,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 				'description' => ''
 			),
 			'enable_discount' => array(
-				'title'       => __('Enable Bank Slip Discount', IUGU),
+				'title'       => __('Enable Cash Payment', IUGU),
 				'type'        => 'checkbox',
 				'label'       => __('A discount for customers who choose this payment method.', IUGU),
 				'default'     => 'no',
@@ -141,7 +141,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 		} // end if;
 		if ($this->enable_discount) {
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script('iugu-bank-slip', plugins_url('assets/js/bank-slip' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
+			wp_enqueue_script($this->id, plugins_url('assets/js/'. $this->id . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
 		} // end if;
 		wc_get_template(
 			'bank-slip/checkout-instructions.php',
@@ -286,7 +286,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 					}
 				}
 				if ($persistent) {
-					$title .= '(' . sprintf(__('%s off', IUGU), $value) . ')';
+					$title .= ' (' . sprintf(__('%s off', IUGU), $value) . ')';
 				}
 			} // end if;
 			return $title;

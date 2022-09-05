@@ -123,8 +123,9 @@ msgstr ""
 msgid "Can't do partial refunds"
 msgstr ""
 
-#: inc/class-wc-iugu-hooks.php:51 inc/class-wc-iugu-hooks.php:243
-#: inc/class-wc-iugu-hooks.php:298
+#: inc/class-wc-iugu-hooks.php:51
+#: inc/class-wc-iugu-hooks.php:243
+#: inc/class-wc-iugu-hooks.php:300
 msgid "Bank Slip discount"
 msgstr ""
 
@@ -382,7 +383,7 @@ msgid "Payment options"
 msgstr ""
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:87
-msgid "Enable Bank Slip Discount"
+msgid "Enable Cash Payment"
 msgstr ""
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:89
