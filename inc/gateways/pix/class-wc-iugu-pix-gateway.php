@@ -37,6 +37,10 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 		$this->init_form_fields();
 		// Load the settings.
 		$this->init_settings();
+		// Options.
+		$this->enable_discount  = $this->get_option('enable_discount') == 'yes';
+		$this->discount_type    = $this->get_option('discount_type');
+		$this->discount_value   = $this->get_option('discount_value');
 		/**
 		 * Handles notification requets from the API.
 		 */
@@ -54,6 +58,9 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 		 */
 		add_action('woocommerce_email_after_order_table', array($this, 'email_instructions'), 10, 3);
 		add_filter('woocommerce_my_account_my_orders_actions', array($this, 'my_orders_pix_link'), 10, 2);
+		if ($this->enable_discount) {
+			add_filter('woocommerce_gateway_title', array($this, 'discount_payment_method_title'), 10, 2);
+		} // end if;
 	} // end __construct;
 
 	/**
@@ -97,6 +104,29 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 			'label'   => __('When enabled, the customer only gets the order total, not the list of purchased items.', IUGU),
 			'default' => 'no'
 		);
+		$this->form_fields['enable_discount'] = array(
+			'title'       => __('Enable Cash Payment', IUGU),
+			'type'        => 'checkbox',
+			'label'       => __('A discount for customers who choose this payment method.', IUGU),
+			'default'     => 'no',
+			'description' => __('A discount for customers who choose this payment method.', IUGU),
+		);
+		$this->form_fields['discount_type'] = array(
+			'title'             => __('Discount Type', IUGU),
+			'type'              => 'select',
+			'description'       => __('Discount can be a percentage amount or a fixed amount of the total order.', IUGU),
+			'default'           => 'percentage',
+			'options' => array(
+				'percentage' => __('(%) Percentage'),
+				'fixed'      => __('Fixed Amount')
+			),
+		);
+		$this->form_fields['discount_value'] = array(
+			'title'             => __('Discount value', IUGU),
+			'type'              => 'number',
+			'description'       => __('The amount of discount.', IUGU),
+			'default'           => '0',
+		);
 	} // end init_form_fields;
 
 	/**
@@ -107,6 +137,10 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 	public function payment_fields() {
 		if ($description = $this->get_description()) {
 			echo wpautop(wptexturize($description));
+		} // end if;
+		if ($this->enable_discount) {
+			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+			wp_enqueue_script($this->id, plugins_url('assets/js/'. $this->id . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
 		} // end if;
 		wc_get_template(
 			'pix/checkout-instructions.php',
@@ -224,4 +258,43 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 		}
 		return $actions;
 	}
+
+	/**
+	 * Display the discount in the gateway title.
+	 *
+	 * @param string $title
+	 * @param string $id
+	 * @return void
+	 */
+	public function discount_payment_method_title($title, $gateway_id) {
+		if (!is_checkout() && !(defined('DOING_AJAX') && DOING_AJAX)) {
+			return $title;
+		} // end if;
+
+		if ($gateway_id === $this->id) {
+			if ($this->discount_value && 0 < $this->discount_value) {
+				if ($this->discount_type && $this->discount_type == 'percentage') {
+					$value = $this->discount_value . '%';
+				} else {
+					$value = wc_price($this->discount_value);
+				} // end if;
+				$persistent = true;
+				if (function_exists('wcs_cart_contains_renewal')) {
+					$cart_item = wcs_cart_contains_renewal();
+					if (false !== $cart_item && isset($cart_item['subscription_renewal']['renewal_order_id'])) {
+						$renewal_order = wc_get_order($cart_item['subscription_renewal']['renewal_order_id']);
+						if ($renewal_order) {
+							$iugu_subscription_discount_type = get_option('iugu_subscription_discount_type');
+							$persistent = $iugu_subscription_discount_type === 'persistent';
+						}
+					}
+				}
+				if ($persistent) {
+					$title .= ' (' . sprintf(__('%s off', IUGU), $value) . ')';
+				}
+			} // end if;
+			return $title;
+		} // end if;
+		return $title;
+	} // end discount_payment_method_title;
 } // end WC_Iugu_Pix_Gateway2;

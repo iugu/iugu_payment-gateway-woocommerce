@@ -275,14 +275,16 @@ class WC_Iugu_Hooks2 {
 				}
 			}
 		}
-		if (WC()->session->chosen_payment_method === 'iugu-bank-slip') {
-			$check_desconto_boleto = true;
+		$payment_method = WC()->session->chosen_payment_method;
+		if (in_array($payment_method, ['iugu-bank-slip', 'iugu-pix'])) {
+
+			$check_discount = true;
 			if (class_exists('WC_Subscriptions_Order') && isset($cart->next_payment_date)) {
 				$iugu_subscription_discount_type = get_option('iugu_subscription_discount_type');
-				$check_desconto_boleto = $iugu_subscription_discount_type === 'persistent';
+				$check_discount = $iugu_subscription_discount_type === 'persistent';
 			}
-			if ($check_desconto_boleto) {
-				$iugu_options = get_option('woocommerce_iugu-bank-slip_settings');
+			$iugu_options = get_option("woocommerce_" . $payment_method . "_settings");
+			if ($check_discount) {
 				if (isset($iugu_options['enable_discount']) and $iugu_options['enable_discount'] == 'yes') {
 					$type = $iugu_options['discount_type'];
 					$discount_value = $iugu_options['discount_value'];

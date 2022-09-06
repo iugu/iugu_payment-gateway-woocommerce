@@ -131,8 +131,9 @@ msgstr "A requisição falhou!"
 msgid "Can't do partial refunds"
 msgstr "Não é possível reembolsos parciais"
 
-#: inc/class-wc-iugu-hooks.php:51 inc/class-wc-iugu-hooks.php:243
-#: inc/class-wc-iugu-hooks.php:298
+#: inc/class-wc-iugu-hooks.php:51
+#: inc/class-wc-iugu-hooks.php:243
+#: inc/class-wc-iugu-hooks.php:300
 msgid "Bank Slip discount"
 msgstr "Desconto no boleto"
 
@@ -403,37 +404,45 @@ msgid "Payment options"
 msgstr "Opções de pagamento"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:87
-msgid "Enable Bank Slip Discount"
-msgstr "Habilitar o desconto de boleto bancário"
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:108
+msgid "Enable Cash Payment"
+msgstr "Habilitar o desconto à vista"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:89
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:91
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:110
 msgid "A discount for customers who choose this payment method."
 msgstr "Um desconto para clientes que escolhem esta forma de pagamento."
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:94
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:115
 msgid "Discount Type"
 msgstr "Tipo de desconto"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:96
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:117
 msgid ""
 "Discount can be a percentage amount or a fixed amount of the total order."
 msgstr ""
 "O desconto pode ser um valor percentual ou um valor fixo do pedido total."
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:99
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:120
 msgid "(%) Percentage"
 msgstr "(%) Porcentagem"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:100
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:121
 msgid "Fixed Amount"
 msgstr "Quantia fixa"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:104
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:125
 msgid "Discount value"
 msgstr "Valor de desconto"
 
 #: inc/gateways/bank-slip/class-wc-iugu-bank-slip-gateway.php:106
+#: inc/gateways/pix/class-wc-iugu-pix-gateway.php:127
 msgid "The amount of discount."
 msgstr "O valor do desconto."
 
