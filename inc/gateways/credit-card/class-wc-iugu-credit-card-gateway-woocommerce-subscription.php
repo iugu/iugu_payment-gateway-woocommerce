@@ -104,7 +104,7 @@ class WC_Iugu_Credit_Card_Woocommerce_Subscription_Gateway extends WC_Iugu_Wooco
 			$_iugu_customer_payment_method_id = get_post_meta($subscription->get_id(), '_iugu_customer_payment_method_id', true);
 			$payment_method = __('Not Found', IUGU);
 			if (isset($_iugu_customer_payment_method_id)) {
-				$payment_methods = WC_Iugu_API2::get_payment_methods();
+				$payment_methods = WC_Iugu_API::get_payment_methods();
 				if (isset($payment_methods)) {
 					foreach ($payment_methods as $pm) {
 						if ($pm->get_token() == $_iugu_customer_payment_method_id) {

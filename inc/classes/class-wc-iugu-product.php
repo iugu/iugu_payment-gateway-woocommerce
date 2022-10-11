@@ -158,7 +158,7 @@ class WC_IUGU_Product {
         ob_start();
         $split                       = array();
         $loop = "{loop}";
-        include(WC_Iugu2::get_templates_path() . 'admin/split.php');
+        include(WC_Iugu::get_templates_path() . 'admin/split.php');
         $html = ob_get_clean();
         $html = str_replace(array("\n", "\r"), '', str_replace("'", '"', $html));
         wp_send_json(array('html' => $html));
@@ -191,7 +191,7 @@ class WC_IUGU_Product {
         $splits = array_filter((array) $product->get_meta('_product_iugu_splits'));
         $loop = 0;
         foreach ($splits as $split) {
-            include(WC_Iugu2::get_templates_path() . 'admin/split.php');
+            include(WC_Iugu::get_templates_path() . 'admin/split.php');
             $loop++;
         }
         $params = array(
@@ -205,7 +205,7 @@ class WC_IUGU_Product {
         );
 
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-        wp_register_script('woocommerce_product_iugu', plugins_url('assets/js/admin-product' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array(), WC_Iugu2::CLIENT_VERSION, true);
+        wp_register_script('woocommerce_product_iugu', plugins_url('assets/js/admin-product' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array(), WC_Iugu::CLIENT_VERSION, true);
         wp_localize_script('woocommerce_product_iugu', 'wc_iugu_params', apply_filters('wc_iugu_params', $params));
         wp_enqueue_script('woocommerce_product_iugu');
     }

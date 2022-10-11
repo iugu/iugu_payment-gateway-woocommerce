@@ -33,7 +33,7 @@ class WC_IUGU_Settings extends WC_Settings_API {
     }
 
     public function process_admin_options_local() {
-        WC_Iugu2::get_instance()->iugu_hooks->create_iugu_webhook();
+        WC_Iugu::get_instance()->iugu_hooks->create_iugu_webhook();
     }
 
     public static function add_settings_tab($settings_tabs) {
@@ -158,7 +158,7 @@ class WC_IUGU_Settings extends WC_Settings_API {
                 'type'        => 'checkbox',
                 'label'       => __('Enable logging', IUGU),
                 'default'     => 'iugu_debug',
-                'description' => sprintf(__('Log iugu events, such as API requests, for debugging purposes. The log can be found in %s.', IUGU), WC_Iugu2::get_log_view($this->id))
+                'description' => sprintf(__('Log iugu events, such as API requests, for debugging purposes. The log can be found in %s.', IUGU), WC_Iugu::get_log_view($this->id))
             )
         );
     }

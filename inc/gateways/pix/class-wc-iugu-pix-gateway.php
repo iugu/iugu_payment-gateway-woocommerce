@@ -5,7 +5,7 @@
  *
  * Extended by individual payment gateways to handle payments.
  *
- * @class   WC_Iugu_Pix_Gateway2
+ * @class   WC_Iugu_Pix_Gateway
  * @extends WC_Payment_Gateway
  * @version 2.2.0
  * @author  iugu
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 	exit;
 } // end if;
 
-class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
+class WC_Iugu_Pix_Gateway extends WC_Iugu_Woocommerce_Subscription_Gateway {
 
 	/**
 	 * Constructor for the gateway.
@@ -112,7 +112,7 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 			'pix/checkout-instructions.php',
 			array(),
 			'woocommerce/iugu/',
-			WC_Iugu2::get_templates_path()
+			WC_Iugu::get_templates_path()
 		);
 	} // end payment_fields;
 
@@ -140,15 +140,15 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 			$template_data['qrcode'] = $data['qrcode'];
 			$template_data['qrcode_text'] = $data['qrcode_text'];
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script('iugu-qrcode', plugins_url('assets/js/qrcode.min.js', WC_IUGU_PLUGIN_FILE), array(), WC_Iugu2::CLIENT_VERSION, true);
-			wp_enqueue_script('wc-iugu-clipboard', 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js', '2.0.8', array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
-			wp_enqueue_script('iugu-pix', plugins_url('assets/js/pix' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery', 'iugu-qrcode', 'wc-iugu-clipboard'), WC_Iugu2::CLIENT_VERSION, true);
+			wp_enqueue_script('iugu-qrcode', plugins_url('assets/js/qrcode.min.js', WC_IUGU_PLUGIN_FILE), array(), WC_Iugu::CLIENT_VERSION, true);
+			wp_enqueue_script('wc-iugu-clipboard', 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js', '2.0.8', array('jquery'), WC_Iugu::CLIENT_VERSION, true);
+			wp_enqueue_script('iugu-pix', plugins_url('assets/js/pix' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery', 'iugu-qrcode', 'wc-iugu-clipboard'), WC_Iugu::CLIENT_VERSION, true);
 			wp_enqueue_style('iugu-woocommerce-pix-css', plugins_url('assets/css/pix' . $suffix . '.css', WC_IUGU_PLUGIN_FILE));
 			wc_get_template(
 				'pix/payment-instructions.php',
 				$template_data,
 				'woocommerce/iugu/',
-				WC_Iugu2::get_templates_path()
+				WC_Iugu::get_templates_path()
 			);
 		} // end if;
 	} // end thankyou_page;
@@ -175,7 +175,7 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 						'qrcode_text' => $data['qrcode_text'],
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			} else {
 				wc_get_template(
@@ -185,7 +185,7 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 						'qrcode_text' => $data['qrcode_text'],
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			} // end if;
 		} // end if;
@@ -224,4 +224,4 @@ class WC_Iugu_Pix_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
 		}
 		return $actions;
 	}
-} // end WC_Iugu_Pix_Gateway2;
+} // end WC_Iugu_Pix_Gateway;

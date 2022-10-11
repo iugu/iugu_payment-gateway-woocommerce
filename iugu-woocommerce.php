@@ -1,12 +1,11 @@
 <?php
-
 /**
- * Plugin Name: IUGU Payment Gateway
+ * Plugin Name: WooCommerce iugu
  * Plugin URI: https://github.com/iugu/iugu-woocommerce
  * Description: iugu payment gateway for WooCommerce.
  * Author: iugu
  * Author URI: https://iugu.com/
- * Version: 3.0.0.11
+ * Version: 3.1.0
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * License: GPLv2 or later
@@ -18,32 +17,32 @@ if (!defined('ABSPATH')) {
 	exit;
 } // end if;
 
-if (!class_exists('WC_Iugu2')) {
+if (!class_exists('WC_Iugu')) {
 
 	/**
 	 * WooCommerce Iugu main class.
 	 */
-	class WC_Iugu2 {
+	class WC_Iugu {
 		/**
 		 * API constants. Plugin name and version.
 		 *
 		 * @var string
 		 */
-		const CLIENT_NAME = 'plugin-iugu-woocommerce-payment-gateway';
+		const CLIENT_NAME = 'plugin-iugu-woocommerce';
 
-		const CLIENT_VERSION = '3.0.0.11';
+		const CLIENT_VERSION = '3.1.0';
 
 		/**
 		 * Instance of this class.
 		 *
-		 * @var WC_Iugu_Hooks2
+		 * @var WC_Iugu_Hooks
 		 */
 		public $iugu_hooks = null;
 
 		/**
 		 * Instance of this class.
 		 *
-		 * @var WC_Iugu2
+		 * @var WC_Iugu
 		 */
 		protected static $instance = null;
 		/**
@@ -73,7 +72,7 @@ if (!class_exists('WC_Iugu2')) {
 				 */
 				$this->load_plugin_textdomain();
 				WC()->frontend_includes();
-				if (!class_exists('WC_Iugu')) {
+				if (!class_exists('WC_Iugu2')) {
 					/**
 					 * Checks with WooCommerce and WooCommerce Extra Checkout Fields for Brazil is installed.
 					 */
@@ -99,10 +98,11 @@ if (!class_exists('WC_Iugu2')) {
 		} // end __construct;
 
 		function woocommerce_get_customer_payment_tokens($tokens, $customer_id, $gateway_id) {
-			if (!WC()->session->get('in_woocommerce_get_customer_payment_tokens', false)) {
+			if (WC()->session != null &&
+			    !WC()->session->get('in_woocommerce_get_customer_payment_tokens', false)) {
 				WC()->session->set('in_woocommerce_get_customer_payment_tokens', true);
 				try {
-					$api = new WC_Iugu_API2(null, 'credit-card');
+					$api = new WC_Iugu_API(null, 'credit-card');
 					if (strlen(get_user_meta(get_current_user_id(), '_iugu_customer_id', true)) > 0) {
 						$api->get_customer_id();
 						$tokens = $api->get_payment_methods();
@@ -113,11 +113,11 @@ if (!class_exists('WC_Iugu2')) {
 							$payment_methods_iugu = $api->get_iugu_customer_payment_methods($customer_id_iugu);
 							if (is_array($payment_methods_iugu) && count($payment_methods_iugu) > 0) {
 								foreach ($payment_methods_iugu as $token_info) {
-									if ($token_info['item_type'] == 'credit_card') {
+									if (isset($token_info['item_type']) && $token_info['item_type'] == 'credit_card') {
 										$api->set_wc_payment_method($token_info, false, $customer_id_iugu);
 									}
 								}
-								$tokens = WC_Iugu_API2::get_payment_methods();
+								$tokens = WC_Iugu_API::get_payment_methods();
 							}
 						}
 					}
@@ -159,7 +159,7 @@ if (!class_exists('WC_Iugu2')) {
 		/**
 		 * Return an instance of this class.
 		 *
-		 * @return WC_Iugu2 A single instance of this class.
+		 * @return WC_Iugu A single instance of this class.
 		 */
 		public static function get_instance() {
 			/**
@@ -235,7 +235,7 @@ if (!class_exists('WC_Iugu2')) {
 			include_once 'inc/class-wc-iugu-hooks.php';
 
 			$this->settings();
-			$this->iugu_hooks = new WC_Iugu_Hooks2();
+			$this->iugu_hooks = new WC_Iugu_Hooks();
 			WC_IUGU_Product::init();
 			WC_IUGU_UserProfile::init();
 		} // end includes;
@@ -247,9 +247,9 @@ if (!class_exists('WC_Iugu2')) {
 		 * @return array Payment methods with Iugu.
 		 */
 		public function add_gateway($methods) {
-			$methods[] = 'WC_Iugu_Credit_Card_Gateway2';
-			$methods[] = 'WC_Iugu_Bank_Slip_Gateway2';
-			$methods[] = 'WC_Iugu_Pix_Gateway2';
+			$methods[] = 'WC_Iugu_Credit_Card_Gateway';
+			$methods[] = 'WC_Iugu_Bank_Slip_Gateway';
+			$methods[] = 'WC_Iugu_Pix_Gateway';
 			return $methods;
 		} // end add_gateway;
 
@@ -293,19 +293,19 @@ if (!class_exists('WC_Iugu2')) {
 			} else {
 				$settings_url = admin_url('admin.php?page=woocommerce_settings&tab=payment_gateways&section=');
 			} // end if;
-			$credit_card = 'WC_Iugu_Credit_Card_Gateway2';
-			$bank_slip   = 'WC_Iugu_Bank_Slip_Gateway2';
-			$pix = 'WC_Iugu_Pix_Gateway2';
+			$credit_card = 'WC_Iugu_Credit_Card_Gateway';
+			$bank_slip   = 'WC_Iugu_Bank_Slip_Gateway';
+			$pix = 'WC_Iugu_Pix_Gateway';
 			$plugin_links[] = '<a href="' . admin_url('admin.php?page=wc-settings&tab=' . IUGU) . '">' . __('Integration settings', IUGU) . '</a>';
 			$plugin_links[] = '<a href="' . esc_url($settings_url . $credit_card) . '">' . __('Credit card settings', IUGU) . '</a>';
 			$plugin_links[] = '<a href="' . esc_url($settings_url . $bank_slip) . '">' . __('Bank slip settings', IUGU) . '</a>';
 			$plugin_links[] = '<a href="' . esc_url($settings_url . $pix) . '">' . __('PIX settings', IUGU) . '</a>';
 			return array_merge($plugin_links, $links);
 		} // end plugin_action_links;
-	} // end WC_Iugu2;
+	} // end WC_Iugu;
 
 	/**
 	 * Add get instance to the plugins loaded hook;
 	 */
-	add_action('plugins_loaded', array('WC_Iugu2', 'get_instance'));
+	add_action('plugins_loaded', array('WC_Iugu', 'get_instance'));
 } // end if;

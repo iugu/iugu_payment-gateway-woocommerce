@@ -3,7 +3,7 @@
 /**
  * WC iugu API Class.
  */
-class WC_Iugu_API2 {
+class WC_Iugu_API {
 
   /**
    * API URL.
@@ -32,7 +32,7 @@ class WC_Iugu_API2 {
    * @var WC_IUGU_Settings
    */
   protected function settings() {
-    return WC_Iugu2::get_instance()->settings();
+    return WC_Iugu::get_instance()->settings();
   }
 
   private function logger_add($message) {
@@ -233,7 +233,7 @@ class WC_Iugu_API2 {
       )
     );
     if (!empty($data)) {
-      $params['body'] = $data . '&client_name=' . WC_Iugu2::CLIENT_NAME . '&client_version=' . WC_Iugu2::CLIENT_VERSION;
+      $params['body'] = $data . '&client_name=' . WC_Iugu::CLIENT_NAME . '&client_version=' . WC_Iugu::CLIENT_VERSION;
     } // end if;
     if (!empty($headers)) {
       $params['headers'] = $headers;
@@ -914,7 +914,7 @@ class WC_Iugu_API2 {
   }
 
   private function clearAllCreditCardsCurrentUser($user_id) {
-    $tokens = WC_Payment_Tokens::get_customer_tokens($user_id, WC_Iugu_Credit_Card_Gateway2::gateway_id);
+    $tokens = WC_Payment_Tokens::get_customer_tokens($user_id, WC_Iugu_Credit_Card_Gateway::gateway_id);
     if (is_array($tokens) && count($tokens) > 0) {
       foreach ($tokens as $token) {
         WC_Payment_Tokens::delete($token->get_id());
@@ -1029,7 +1029,7 @@ class WC_Iugu_API2 {
    * @return array Customer payment methods.
    */
   public static function get_payment_methods() {
-    return WC_Payment_Tokens::get_customer_tokens(get_current_user_id(), WC_Iugu_Credit_Card_Gateway2::gateway_id);
+    return WC_Payment_Tokens::get_customer_tokens(get_current_user_id(), WC_Iugu_Credit_Card_Gateway::gateway_id);
   } // end get_payment_methods;
 
   public function cancel_invoice($order_id) {
@@ -1228,7 +1228,7 @@ class WC_Iugu_API2 {
     $this->logger_add('iugu payment status for order ' . $order->get_order_number() . ' is now: ' . $invoice_status);
     switch ($invoice_status) {
       case 'pending':
-        if (!in_array($order_status, array('on-hold', 'processing', 'completed'))) {
+        if (!in_array($order_status, array('on-hold', 'processing', 'completed', $this->settings()->iugu_status_processing))) {
           if ('bank-slip' == $this->method) {
             $order->update_status($this->settings()->iugu_status_pending, __('iugu: The customer generated a bank slip. Awaiting payment confirmation.', IUGU));
           } elseif ('pix' == $this->method) {
@@ -1308,6 +1308,14 @@ class WC_Iugu_API2 {
       if ($_REQUEST['event'] === 'invoice.status_changed' || 
           $_REQUEST['event'] === 'invoice.released' ||
           $_REQUEST['event'] === 'invoices') {
+        if ($_REQUEST['event'] === 'invoice.status_changed') {
+          sleep(1);
+        } else if ($_REQUEST['event'] === 'invoice.released') {
+          sleep(2);
+        }
+        else if ($_REQUEST['event'] === 'invoices') {
+          sleep(3);
+        }
         global $wpdb;
         header('HTTP/1.1 200 OK');
         $invoice_id = sanitize_text_field($_REQUEST['data']['id']);
@@ -1378,4 +1386,4 @@ class WC_Iugu_API2 {
     return $body;
   } // end create_iugu_webhook;
 
-} // end WC_Iugu_API2;
+} // end WC_Iugu_API;

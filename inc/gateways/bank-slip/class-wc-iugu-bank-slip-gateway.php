@@ -10,12 +10,12 @@ if (!defined('ABSPATH')) {
  *
  * Extended by individual payment gateways to handle payments.
  *
- * @class   WC_Iugu_Bank_Slip_Gateway2
+ * @class   WC_Iugu_Bank_Slip_Gateway
  * @extends WC_Payment_Gateway 
  * @version 1.0.0
  * @author  iugu
  */
-class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gateway {
+class WC_Iugu_Bank_Slip_Gateway extends WC_Iugu_Woocommerce_Subscription_Gateway {
 
 	/**
 	 * Constructor for the gateway.
@@ -141,13 +141,13 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 		} // end if;
 		if ($this->enable_discount) {
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script('iugu-bank-slip', plugins_url('assets/js/bank-slip' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
+			wp_enqueue_script('iugu-bank-slip', plugins_url('assets/js/bank-slip' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu::CLIENT_VERSION, true);
 		} // end if;
 		wc_get_template(
 			'bank-slip/checkout-instructions.php',
 			array(),
 			'woocommerce/iugu/',
-			WC_Iugu2::get_templates_path()
+			WC_Iugu::get_templates_path()
 		);
 	} // end payment_fields;
 
@@ -177,7 +177,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 					'pdf' => $data['pdf']
 				),
 				'woocommerce/iugu/',
-				WC_Iugu2::get_templates_path()
+				WC_Iugu::get_templates_path()
 			);
 		}
 	}
@@ -204,7 +204,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 						'pdf' => $data['pdf']
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			} else {
 				wc_get_template(
@@ -213,7 +213,7 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 						'pdf' => $data['pdf']
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			}
 		}
@@ -294,4 +294,4 @@ class WC_Iugu_Bank_Slip_Gateway2 extends WC_Iugu_Woocommerce_Subscription_Gatewa
 		return $title;
 	} // end discount_payment_method_title;
 
-} // end WC_Iugu_Bank_Slip_Gateway2;
+} // end WC_Iugu_Bank_Slip_Gateway;
