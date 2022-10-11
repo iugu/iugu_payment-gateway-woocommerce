@@ -8,17 +8,17 @@ if (!defined('ABSPATH')) {
  *
  * Extended by individual payment gateways to handle payments.
  *
- * @class   WC_Iugu_Credit_Card_Gateway2
+ * @class   WC_Iugu_Credit_Card_Gateway
  * @extends WC_Iugu_Credit_Card_Woocommerce_Subscription_Gateway
  */
-class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subscription_Gateway {
+class WC_Iugu_Credit_Card_Gateway extends WC_Iugu_Credit_Card_Woocommerce_Subscription_Gateway {
 
 	const gateway_id = 'iugu-credit-card';
 	/**
 	 * Constructor for the gateway.
 	 */
 	public function __construct() {
-		$this->id                   = WC_Iugu_Credit_Card_Gateway2::gateway_id;
+		$this->id                   = WC_Iugu_Credit_Card_Gateway::gateway_id;
 		parent::__construct();
 		global $woocommerce;
 		$this->icon                 = apply_filters('iugu_woocommerce_credit_card_icon', '');
@@ -267,7 +267,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 			wp_enqueue_style('iugu-woocommerce-credit-card-css', plugins_url('assets/css/credit-card' . $suffix . '.css', WC_IUGU_PLUGIN_FILE));
 			wp_enqueue_script('iugu-js', $this->api->get_js_url(), array(), null, true);
-			wp_enqueue_script('iugu-woocommerce-credit-card-js', plugins_url('assets/js/credit-card' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery', 'wc-credit-card-form'), WC_Iugu2::CLIENT_VERSION, true);
+			wp_enqueue_script('iugu-woocommerce-credit-card-js', plugins_url('assets/js/credit-card' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery', 'wc-credit-card-form'), WC_Iugu::CLIENT_VERSION, true);
 			wp_localize_script(
 				'iugu-woocommerce-credit-card-js',
 				'iugu_wc_credit_card_params',
@@ -430,7 +430,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 				'iugu-credit-card-mask',
 				plugins_url('assets/js/jquery.mask.js', WC_IUGU_PLUGIN_FILE),
 				array('jquery'),
-				WC_Iugu2::CLIENT_VERSION,
+				WC_Iugu::CLIENT_VERSION,
 				true
 			);
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
@@ -438,7 +438,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 				'iugu-credit-card-my-account',
 				plugins_url('assets/js/my-account-credit-card' . $suffix . '.js', WC_IUGU_PLUGIN_FILE),
 				array('jquery', 'iugu-js', 'iugu-credit-card-mask'),
-				WC_Iugu2::CLIENT_VERSION,
+				WC_Iugu::CLIENT_VERSION,
 				true
 			);
 			wp_localize_script(
@@ -461,7 +461,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 			'credit-card/payment-form.php',
 			$template_params,
 			'woocommerce/iugu/',
-			WC_Iugu2::get_templates_path()
+			WC_Iugu::get_templates_path()
 		);
 	} // end payment_fields;
 
@@ -555,7 +555,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 					'installments' => $data['installments']
 				),
 				'woocommerce/iugu/',
-				WC_Iugu2::get_templates_path()
+				WC_Iugu::get_templates_path()
 			);
 		}
 	}
@@ -590,7 +590,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 						'installments' => $data['installments']
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			} else {
 				wc_get_template(
@@ -599,7 +599,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 						'installments' => $data['installments']
 					),
 					'woocommerce/iugu/',
-					WC_Iugu2::get_templates_path()
+					WC_Iugu::get_templates_path()
 				);
 			}
 		}
@@ -624,7 +624,7 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 			((isset($_GET['section']) && strtolower($this->id) == strtolower($_GET['section'])) || (isset($_GET['section']) && strtolower(get_class($this)) == strtolower($_GET['section'])))
 		) {
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_script('iugu-credit-card-admin', plugins_url('assets/js/admin-credit-card' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu2::CLIENT_VERSION, true);
+			wp_enqueue_script('iugu-credit-card-admin', plugins_url('assets/js/admin-credit-card' . $suffix . '.js', WC_IUGU_PLUGIN_FILE), array('jquery'), WC_Iugu::CLIENT_VERSION, true);
 		} // end if;
 	} // end admin_scripts.
 
@@ -655,4 +655,4 @@ class WC_Iugu_Credit_Card_Gateway2 extends WC_Iugu_Credit_Card_Woocommerce_Subsc
 		$customer_id = $this->api->get_customer_id();
 		$this->api->set_default_payment_method($customer_id, $token->get_token());
 	}
-} // end WC_Iugu_Credit_Card_Gateway2;
+} // end WC_Iugu_Credit_Card_Gateway;

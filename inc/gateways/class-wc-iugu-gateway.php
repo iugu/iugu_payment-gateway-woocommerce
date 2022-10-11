@@ -9,7 +9,7 @@ class WC_Iugu_Gateway extends WC_Payment_Gateway {
      * @var WC_IUGU_Settings
      */
     public function settings() {
-        return WC_Iugu2::get_instance()->settings();
+        return WC_Iugu::get_instance()->settings();
     }
 
     public function __construct() {
@@ -23,7 +23,7 @@ class WC_Iugu_Gateway extends WC_Payment_Gateway {
         $this->description      = $this->get_option('description');
         $this->ignore_due_email = $this->get_option('ignore_due_email');
         $this->send_only_total  = $this->get_option('send_only_total', 'no');
-        $this->api = new WC_Iugu_API2($this, str_replace('iugu-', '', $this->id));
+        $this->api = new WC_Iugu_API($this, str_replace('iugu-', '', $this->id));
     }
 
     public function is_available() {

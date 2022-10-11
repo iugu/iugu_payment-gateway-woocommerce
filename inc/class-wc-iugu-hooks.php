@@ -7,12 +7,12 @@ if (!defined('ABSPATH')) {
 	exit;
 } // end if;
 
-class WC_Iugu_Hooks2 {
+class WC_Iugu_Hooks {
 
 	/**
 	 * Iugu API object.
 	 *
-	 * @var WC_Iugu_API2
+	 * @var WC_Iugu_API
 	 */
 	protected $api;
 
@@ -20,7 +20,7 @@ class WC_Iugu_Hooks2 {
 	 * Initialize my account actions.
 	 */
 	public function __construct() {
-		$this->api = new WC_Iugu_API2();
+		$this->api = new WC_Iugu_API();
 		add_action('wp_ajax_wc_iugu_notification_handler', array($this, 'webhook_notification_handler'));
 		add_action('wp_ajax_nopriv_wc_iugu_notification_handler', array($this, 'webhook_notification_handler'));
 		if (class_exists('WC_Subscriptions_Order')) {
@@ -327,4 +327,4 @@ class WC_Iugu_Hooks2 {
 		$this->api->notification_handler();
 	} // end webhook_notification_handler;
 
-} // end WC_Iugu_Hooks2;
+} // end WC_Iugu_Hooks;

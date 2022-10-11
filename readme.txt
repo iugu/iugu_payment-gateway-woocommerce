@@ -3,7 +3,7 @@ Contributors: iugu, claudiosanches, braising, andsnleo, eduardoiugu
 Tags: woocommerce, iugu, payment
 Requires at least: 3.9
 Tested up to: 4.9
-Stable tag: 2.2.1
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,16 +17,16 @@ A iugu disponibiliza toda a infraestrutura necessária para que você possa tran
 
 O **WooCommerce iugu** é compatível com:
 
-* [WooCommerce 3.0+](https://wordpress.org/plugins/woocommerce/)
-* [WooCommerce Subscriptions](http://www.woothemes.com/products/woocommerce-subscriptions/): para pagamentos recorrentes/assinaturas.
+* [WooCommerce 5.1+](https://wordpress.org/plugins/woocommerce/)
+* [WooCommerce Subscriptions 3.1.4+](http://www.woothemes.com/products/woocommerce-subscriptions/): para pagamentos recorrentes/assinaturas.
 * [WooCommerce Pre-orders](http://www.woothemes.com/products/woocommerce-pre-orders/): para pré-venda de produtos.
-* [WooCommerce Extra Checkout Fields for Brazil](https://br.wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/): permite enviar dados do cliente como **CPF** ou **CNPJ**, além dos campos **número** e **bairro** do endereço.
+* [Brazilian Market on WooCommerce](https://br.wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/): permite enviar dados do cliente como **CPF** ou **CNPJ**, além dos campos **número** e **bairro** do endereço.
 
 = Requerimentos =
 
-* [Wordpress v3.9 ou superior](https://wordpress.org).
-* [WooCommerce v3.0 ou superior](https://br.wordpress.org/plugins/woocommerce/).
-* [WooCommerce Extra Checkout Fields for Brazil](https://br.wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/).
+* [Wordpress v5.6 ou superior](https://wordpress.org).
+* [WooCommerce v5.1 ou superior](https://br.wordpress.org/plugins/woocommerce/).
+* [Brazilian Market on WooCommerce](https://br.wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/).
 * Conta ativa na [iugu](https://iugu.com/) com boleto bancário e/ou cartão de crédito habilitados como métodos de pagamento. Entenda [*O que é necessário para começar a usar iugu?*](https://support.iugu.com/hc/pt-br/articles/201531709).
 
 
@@ -87,6 +87,12 @@ Para produtos digitais, por padrão, o WooCommerce só permite o acesso do compr
 
 
 == Changelog ==
+
+= 3.0.0.13 = 
+* Correção: Gerava um erro de session quando o usuário era excluido pelo admin
+
+= 3.0.0.12 = 
+* Correção: Quando PIX ou Boleto sáo pagos, o plugin recebe duas vezes a informação de pagamento. Alterado para ignorar a segunda recepção
 
 = 3.0.0.11 = 
 * Correção: Quando a transação do cartão for negada, alterar o status para malsucedido direto.
@@ -158,26 +164,24 @@ Para produtos digitais, por padrão, o WooCommerce só permite o acesso do compr
 * Melhoria: Removidas as funções deprecadas do WooCommerce.
 * Correção: Função responsável por identificar se o cliente é uma empresa não funcionava apropriadamente.
 
-Veja o [changelog completo no Github](https://github.com/iugu/iugu-woocommerce/wiki).
+Veja o [changelog completo no Github](https://github.com/iugu/iugu_payment-gateway-woocommerce/wiki).
 
 
 == Upgrade Notice ==
 
 = 2.0.2 =
-Alguns usuários reportaram que tiveram problemas com algumas das traduções para o português liberadas na v2.0.1. Tentamos dar um jeito nisso nesta versão. Se, ainda assim, você não ver as   traduções direitinho, é só mandar um email para anderson@iugu.com.
+Alguns usuários reportaram que tiveram problemas com algumas das traduções para o português liberadas na v2.0.1. Tentamos dar um jeito nisso nesta versão. Se, ainda assim, você não ver as   traduções direitinho, é só mandar abrir um chamado no link https://support.iugu.com/hc/pt-br/requests/new .
 
 
 == Suporte ==
 
 = Canais =
-* [Issues no Github](https://github.com/iugu/iugu-woocommerce/issues)
-* [Fórum de suporte no Wordpress](https://wordpress.org/support/plugin/iugu-woocommerce)
+* [Issues no Github](https://github.com/iugu/iugu_payment-gateway-woocommerce/issues)
 * Atendimento da iugu:
-* Email: [suporte@iugu.com](mailto:suporte@iugu.com)
-* Chat online: Disponível para clientes iugu em [app.iugu.com](https://app.iugu.com) (seg. à sex., das 9h às 17h).
+* Chamados: Necessário enviar solicitação no link https://support.iugu.com/hc/pt-br/requests/new
 
 = Compartilhando os logs =
-1. Na administração do plugin do WooCommerce, acesse as configurações de cartão de crédito ou de boleto da iugu, ative o **Log de depuração** e tente realizar o pagamento novamente. Caso o log já esteja ativado, procure o número do pedido feito pelo comprador.
+1. Na administração do plugin do WooCommerce, acesse as configurações da iugu, ative o **Log de depuração** e tente realizar o pagamento novamente. Caso o log já esteja ativado, procure o número do pedido feito pelo comprador.
 2. Copie o log referente ao número do pedido no menu *WooCommerce > Status > Logs*.
 3. Crie um [pastebin](http://pastebin.com) ou um [gist](http://gist.github.com) e salve o log para gerar um link público de compartilhamento.
 
@@ -186,4 +190,4 @@ Para dúvidas específicas sobre a iugu, acesse nossa [base de conhecimento](htt
 
 == Colabore ==
 
-Você pode contribuir para o desenvolvimento do plug-in fazendo o fork do repositório no [GitHub](https://github.com/iugu/iugu-woocommerce).
+Você pode contribuir para o desenvolvimento do plug-in fazendo o fork do repositório no [GitHub](https://github.com/iugu/iugu_payment-gateway-woocommerce).
