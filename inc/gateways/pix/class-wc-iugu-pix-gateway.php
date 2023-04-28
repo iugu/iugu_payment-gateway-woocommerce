@@ -40,7 +40,7 @@ class WC_Iugu_Pix_Gateway extends WC_Iugu_Woocommerce_Subscription_Gateway {
 		/**
 		 * Handles notification requets from the API.
 		 */
-		add_action('woocommerce_api_wc_iugu_pix_gateway', array($this, 'notification_handler'));
+		add_action('woocommerce_api_wc_iugu_pix_gateway2', array($this, 'notification_handler'));
 		/**
 		 * Adds the gateways settings.
 		 */
